@@ -14,6 +14,9 @@ export const use2048 = () => {
     // Throttle ref to prevent moving faster than animation
     const isMovingRef = useRef(false);
 
+    // Buffer for the next move if pressed during animation
+    const pendingMoveRef = useRef(null);
+
     // Sync ref when state changes
     useEffect(() => {
         boardRef.current = board;
@@ -28,15 +31,15 @@ export const use2048 = () => {
         setGameOver(false);
         setHasWon(false);
         isMovingRef.current = false;
+        pendingMoveRef.current = null;
     }, []);
 
     useEffect(() => {
         initGame();
     }, [initGame]);
 
-    const move = useCallback((direction) => {
+    const executeMove = useCallback((direction) => {
         if (gameOver) return;
-        if (isMovingRef.current) return;
 
         const currentBoard = boardRef.current;
         let result;
@@ -64,12 +67,38 @@ export const use2048 = () => {
             // Unlock input after animation duration (100ms)
             setTimeout(() => {
                 isMovingRef.current = false;
+
+                // If there was a pending move, execute it immediately
+                if (pendingMoveRef.current) {
+                    const nextMove = pendingMoveRef.current;
+                    pendingMoveRef.current = null;
+                    // Recursive call safe because it's in setTimeout (new stack)
+                    executeMove(nextMove);
+                }
             }, 100);
 
             // Optional: Check win (2048 tile)
             // if (newBoard.flat().some(tile => tile && tile.value === 2048)) setHasWon(true);
+        } else {
+            // If move didn't change anything, we don't lock input. 
+            // But if we had a pending move (unlikely if we just arrived here directly), we should clear it?
+            // Actually if I press Left (No change), then Right (Change).
+            // Left shouldn't lock. Right should lock.
         }
-    }, [gameOver]); // Removed 'board' dependency to prevent re-binding
+    }, [gameOver]);
+
+    // Public move handler that decides whether to execute or buffer
+    const move = useCallback((direction) => {
+        if (gameOver) return;
+
+        if (isMovingRef.current) {
+            // Buffer the input
+            pendingMoveRef.current = direction;
+            return;
+        }
+
+        executeMove(direction);
+    }, [gameOver, executeMove]);
 
     return { board, score, move, initGame, gameOver, hasWon };
 };
