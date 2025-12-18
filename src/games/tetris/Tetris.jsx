@@ -134,13 +134,48 @@ const Tetris = () => {
         drop();
     }, dropTime);
 
+    // Touch Handling
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e) => {
+        if (!touchStartX || !touchStartY) return;
+
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // Horizontal
+            if (Math.abs(deltaX) > 30) {
+                if (deltaX > 0) move({ keyCode: 39 }); // Right
+                else move({ keyCode: 37 }); // Left
+            }
+        } else {
+            // Vertical
+            if (Math.abs(deltaY) > 30) {
+                if (deltaY > 0) move({ keyCode: 40 }); // Down
+                else move({ keyCode: 38 }); // Up (Rotate)
+            }
+        }
+    };
+
     return (
         <div
-            className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative outline-none"
+            className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative outline-none touch-none"
             role="button"
             tabIndex="0"
             onKeyDown={e => move(e)}
             onKeyUp={keyUp}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             ref={div => div && div.focus()}
         >
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-gaming-dark to-gaming-dark -z-10" />

@@ -45,8 +45,45 @@ const Game2048 = () => {
         });
     });
 
+    // Touch Handling
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e) => {
+        if (!touchStartX || !touchStartY) return;
+
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // Horizontal
+            if (Math.abs(deltaX) > 30) { // Threshold
+                if (deltaX > 0) move('ArrowRight');
+                else move('ArrowLeft');
+            }
+        } else {
+            // Vertical
+            if (Math.abs(deltaY) > 30) {
+                if (deltaY > 0) move('ArrowDown');
+                else move('ArrowUp');
+            }
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        <div
+            className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative overflow-hidden touch-none"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+        >
             {/* Background Decor */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-900/20 via-gaming-dark to-gaming-dark -z-10" />
 
