@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createStage, checkCollision } from './hooks';
 import { useInterval, usePlayer, useStage, useGameStatus } from './hooks';
@@ -40,6 +40,13 @@ const Tetris = () => {
     const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
     const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
     const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
+
+    useEffect(() => {
+        if (checkCollision(player, stage, { x: 0, y: 0 })) {
+            setGameOver(true);
+            setDropTime(null);
+        }
+    }, [player, stage]);
 
     const movePlayer = dir => {
         if (!checkCollision(player, stage, { x: dir, y: 0 })) {
