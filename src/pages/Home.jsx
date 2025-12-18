@@ -1,42 +1,20 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import GameCard from '../components/GameCard'
+import { games } from '../data/games'
 
 const Home = () => {
-    const games = [
-        {
-            id: '2048',
-            title: '2048',
-            description: 'Join the numbers and get to the 2048 tile!',
-            color: 'bg-yellow-500',
-            link: '/games/2048'
-        },
-        {
-            id: 'tetris',
-            title: 'Tetris',
-            description: 'The classic block-stacking puzzle game.',
-            color: 'bg-purple-600',
-            link: '/games/tetris'
-        },
-        {
-            id: 'pikachu',
-            title: 'Pikachu Volleyball',
-            description: 'Legacy web version of the classic game.',
-            color: 'bg-yellow-400',
-            link: '/games/pikachu'
-        }
-    ]
-
     return (
         <div className="min-h-screen bg-gaming-dark text-white font-sans selection:bg-gaming-500 selection:text-white">
             <header className="p-6 border-b border-gaming-900/50 backdrop-blur-md fixed w-full top-0 z-50 bg-gaming-dark/80">
                 <div className="container mx-auto flex justify-between items-center">
-                    <h1 className="text-2xl font-black tracking-tighter bg-gradient-to-r from-gaming-500 to-purple-500 bg-clip-text text-transparent">
+                    <Link to="/" className="text-2xl font-black tracking-tighter bg-gradient-to-r from-gaming-500 to-purple-500 bg-clip-text text-transparent">
                         GAME<span className="text-white">PORTFOLIO</span>
-                    </h1>
+                    </Link>
                     <nav>
                         <ul className="flex space-x-8 font-medium">
-                            <li><a href="#" className="text-gray-400 hover:text-gaming-500 transition-colors">Home</a></li>
-                            <li><a href="#games" className="text-gray-400 hover:text-gaming-500 transition-colors">Games</a></li>
+                            <li><Link to="/" className="text-white hover:text-gaming-500 transition-colors">Home</Link></li>
+                            <li><Link to="/games" className="text-gray-400 hover:text-gaming-500 transition-colors">Games</Link></li>
                             <li><a href="https://github.com" target="_blank" className="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
                         </ul>
                     </nav>
