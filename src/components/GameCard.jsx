@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { getAssetUrl } from '../utils/assets'
 
 const GameCard = ({ title, description, color, image, link }) => {
     return (
@@ -12,7 +13,7 @@ const GameCard = ({ title, description, color, image, link }) => {
                 <div className={`h-48 w-full ${color} flex items-center justify-center relative overflow-hidden`}>
                     {image ? (
                         <>
-                            <img src={image} alt={title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                            <img src={getAssetUrl(image)} alt={title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300" />
                         </>
                     ) : (
