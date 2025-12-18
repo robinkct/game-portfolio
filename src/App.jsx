@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Game2048 from './games/game-2048/Game2048'
 
 import Games from './pages/Games'
+import Tetris from './games/tetris/Tetris'
 import Pikachu from './games/pikachu/Pikachu'
 
 function App() {
