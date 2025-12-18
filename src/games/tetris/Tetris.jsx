@@ -6,7 +6,7 @@ import { TETROMINOS } from './tetronimos';
 
 // Styled Components
 const Stage = ({ stage }) => (
-    <div className="grid grid-cols-12 grid-rows-20 gap-[1px] border border-gaming-900 bg-gaming-900/50 backdrop-blur-sm w-full h-[60vh] md:h-[70vh] aspect-[12/20]">
+    <div className="grid grid-cols-12 grid-rows-20 gap-[1px] border border-gaming-900 bg-gaming-900/50 backdrop-blur-sm w-full h-full aspect-[12/20]">
         {stage.map(row => row.map((cell, x) => <Cell key={x} type={cell[0]} />))}
     </div>
 );
@@ -169,7 +169,7 @@ const Tetris = () => {
 
     return (
         <div
-            className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative outline-none touch-none"
+            className="h-[100dvh] w-full bg-gaming-dark flex flex-col lg:flex-row items-center justify-center p-2 lg:p-8 relative outline-none touch-none overflow-hidden"
             role="button"
             tabIndex="0"
             onKeyDown={e => move(e)}
@@ -180,7 +180,17 @@ const Tetris = () => {
         >
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-gaming-dark to-gaming-dark -z-10" />
 
-            <div className="flex w-full max-w-5xl justify-between items-start gap-8 h-full">
+            {/* Mobile Header: Back + Stats */}
+            <div className="lg:hidden w-full max-w-[350px] flex justify-between items-center mb-2 z-10 shrink-0">
+                <Link to="/" className="text-gray-400 text-sm">← Back</Link>
+                <div className="flex gap-4 text-xs font-mono text-white">
+                    <div className="bg-gaming-800 px-3 py-1 rounded border border-gaming-500/30">SCORE: {score}</div>
+                    <div className="bg-gaming-800 px-3 py-1 rounded border border-gaming-500/30">LEVEL: {level}</div>
+                </div>
+            </div>
+
+            <div className="flex w-full max-w-5xl justify-center lg:justify-between items-start gap-8 h-full lg:h-auto min-h-0">
+                {/* Desktop Sidebar Left (Title/Back) */}
                 <div className="hidden lg:flex flex-col gap-4">
                     <Link to="/" className="text-gray-400 hover:text-white transition-colors mb-8 text-lg font-bold">← BACK</Link>
                     <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-purple-800 opacity-50">
@@ -188,13 +198,29 @@ const Tetris = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center flex-1">
-                    <Stage stage={stage} />
+                {/* Game Area */}
+                <div className="flex flex-col lg:flex-row gap-4 items-center justify-center h-full w-full min-h-0">
+                    {/* Stage - Flexible container */}
+                    <div className="h-auto w-auto aspect-[12/20] max-h-full lg:h-[70vh] shadow-2xl relative shrink-1 min-h-0">
+                        <Stage stage={stage} />
 
-                    <div className="flex flex-col w-full max-w-[200px]">
-                        {/* Mobile Back Button */}
-                        <Link to="/" className="lg:hidden text-gray-400 hover:text-white mb-4">← Back</Link>
+                        {/* Mobile Game Over Overlay */}
+                        {gameOver && (
+                            <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-20 backdrop-blur-sm lg:hidden rounded lg:rounded-none">
+                                <p className="text-red-500 font-bold text-2xl mb-2">GAME OVER</p>
+                                <p className="text-white mb-4">Score: {score}</p>
+                                <button
+                                    onClick={startGame}
+                                    className="bg-white text-black px-6 py-2 rounded-full font-bold active:scale-95 transition-transform"
+                                >
+                                    Try Again
+                                </button>
+                            </div>
+                        )}
+                    </div>
 
+                    {/* Desktop Sidebar Right (Stats/Controls) */}
+                    <div className="hidden lg:flex flex-col w-full max-w-[200px]">
                         {gameOver ? (
                             <div className="bg-red-500/20 border border-red-500 p-4 rounded-lg mb-4 text-center">
                                 <p className="text-red-500 font-bold text-xl">GAME OVER</p>
@@ -215,7 +241,7 @@ const Tetris = () => {
                             {gameOver ? 'Try Again' : 'Start'}
                         </button>
 
-                        <div className="mt-8 text-sm text-gray-500 hidden md:block">
+                        <div className="mt-8 text-sm text-gray-500">
                             <p className="mb-2">Controls:</p>
                             <ul className="space-y-1">
                                 <li>↑ Rotate</li>
@@ -226,6 +252,16 @@ const Tetris = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Mobile Bottom Bar: Start Button */}
+            <div className="lg:hidden w-full max-w-[350px] mt-4 z-10 shrink-0 pb-4">
+                <button
+                    onClick={startGame}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 rounded-lg shadow-lg active:scale-95 transition-transform border border-white/10"
+                >
+                    {gameOver ? 'New Game' : 'Start Game'}
+                </button>
             </div>
         </div>
     );
