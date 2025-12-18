@@ -208,8 +208,9 @@ const Tetris = () => {
                 </div>
             </div>
 
-            <div className="flex w-full max-w-5xl justify-center lg:justify-between items-start gap-8 h-full lg:h-auto min-h-0">
-                {/* Desktop Sidebar Left (Title/Back) */}
+            {/* Main Content Area - Responsive Flex */}
+            <div className="flex w-full max-w-5xl justify-center lg:justify-between items-start gap-8 flex-1 min-h-0 lg:h-auto overflow-hidden">
+                {/* Desktop Sidebar Left */}
                 <div className="hidden lg:flex flex-col gap-4">
                     <Link to="/" className="text-gray-400 hover:text-white transition-colors mb-8 text-lg font-bold">← BACK</Link>
                     <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-purple-800 opacity-50">
@@ -217,10 +218,10 @@ const Tetris = () => {
                     </div>
                 </div>
 
-                {/* Game Area - Mobile: 80% height, Desktop: auto */}
-                <div className="flex flex-col lg:flex-row gap-4 items-center justify-center h-[85vh] lg:h-full w-full min-h-0">
-                    {/* Stage - Flexible container */}
-                    <div className="h-full w-auto aspect-[12/20] max-h-full lg:h-[70vh] shadow-2xl relative shrink-0">
+                {/* Game Area Wrapper - Takes remaining space on mobile */}
+                <div className="flex flex-col lg:flex-row gap-4 items-center justify-center h-full w-full min-h-0">
+                    {/* Stage - Flexible container with aspect ratio preservation */}
+                    <div className="h-full w-auto aspect-[12/20] max-h-full lg:h-[70vh] shadow-2xl relative shrink-0 flex items-center justify-center">
                         <Stage stage={stage} />
 
                         {/* Mobile Game Over Overlay */}
@@ -238,7 +239,7 @@ const Tetris = () => {
                         )}
                     </div>
 
-                    {/* Desktop Sidebar Right (Stats/Controls) */}
+                    {/* Desktop Sidebar Right */}
                     <div className="hidden lg:flex flex-col w-full max-w-[200px]">
                         {gameOver ? (
                             <div className="bg-red-500/20 border border-red-500 p-4 rounded-lg mb-4 text-center">
@@ -274,7 +275,7 @@ const Tetris = () => {
             </div>
 
             {/* Mobile Bottom Bar: Start Button */}
-            <div className="lg:hidden w-full max-w-[350px] mt-2 z-10 shrink-0 pb-2 h-[8vh] flex items-center">
+            <div className="lg:hidden w-full max-w-[350px] py-3 z-10 shrink-0 flex items-center justify-center h-[auto]">
                 <button
                     onClick={startGame}
                     className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 rounded-lg shadow-lg active:scale-95 transition-transform border border-white/10"
