@@ -4,9 +4,9 @@ import { createStage, checkCollision } from './hooks';
 import { useInterval, usePlayer, useStage, useGameStatus } from './hooks';
 import { TETROMINOS } from './tetronimos';
 
-// Styled Components (using Tailwind)
+// Styled Components
 const Stage = ({ stage }) => (
-    <div className="grid grid-cols-12 grid-rows-20 gap-[1px] border border-gaming-900 bg-gaming-900/50 backdrop-blur-sm w-full max-w-[300px] aspect-[12/20]">
+    <div className="grid grid-cols-12 grid-rows-20 gap-[1px] border border-gaming-900 bg-gaming-900/50 backdrop-blur-sm w-full h-[60vh] md:h-[70vh] aspect-[12/20]">
         {stage.map(row => row.map((cell, x) => <Cell key={x} type={cell[0]} />))}
     </div>
 );
@@ -102,6 +102,8 @@ const Tetris = () => {
                 dropPlayer();
             } else if (keyCode === 38) { // Up
                 playerRotate(stage, 1);
+            } else if (keyCode === 32) { // Space - Hard Drop (optional, skipping for now)
+                // dropPlayer(); 
             }
         }
     };
@@ -117,20 +119,20 @@ const Tetris = () => {
         >
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-gaming-dark to-gaming-dark -z-10" />
 
-            <div className="flex w-full max-w-4xl justify-between items-start gap-8">
-                <div className="hidden md:flex flex-col gap-4">
+            <div className="flex w-full max-w-5xl justify-between items-start gap-8 h-full">
+                <div className="hidden lg:flex flex-col gap-4">
                     <Link to="/" className="text-gray-400 hover:text-white transition-colors mb-8 text-lg font-bold">← BACK</Link>
                     <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-purple-800 opacity-50">
                         TETRIS
                     </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center flex-1">
                     <Stage stage={stage} />
 
                     <div className="flex flex-col w-full max-w-[200px]">
                         {/* Mobile Back Button */}
-                        <Link to="/" className="md:hidden text-gray-400 hover:text-white mb-4">← Back</Link>
+                        <Link to="/" className="lg:hidden text-gray-400 hover:text-white mb-4">← Back</Link>
 
                         {gameOver ? (
                             <div className="bg-red-500/20 border border-red-500 p-4 rounded-lg mb-4 text-center">
@@ -147,9 +149,9 @@ const Tetris = () => {
 
                         <button
                             onClick={startGame}
-                            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all mt-4"
+                            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all mt-4 text-lg"
                         >
-                            {gameOver ? 'Try Again' : 'Start Game'}
+                            {gameOver ? 'Try Again' : 'Start'}
                         </button>
 
                         <div className="mt-8 text-sm text-gray-500 hidden md:block">

@@ -159,10 +159,21 @@ export const useStage = (player, resetPlayer) => {
             player.tetromino.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
-                        newStage[y + player.pos.y][x + player.pos.x] = [
-                            value,
-                            `${player.collided ? 'merged' : 'clear'}`,
-                        ];
+                        // Check boundaries
+                        const targetY = y + player.pos.y;
+                        const targetX = x + player.pos.x;
+
+                        if (
+                            targetY >= 0 &&
+                            targetY < STAGE_HEIGHT &&
+                            targetX >= 0 &&
+                            targetX < STAGE_WIDTH
+                        ) {
+                            newStage[targetY][targetX] = [
+                                value,
+                                `${player.collided ? 'merged' : 'clear'}`,
+                            ];
+                        }
                     }
                 });
             });
