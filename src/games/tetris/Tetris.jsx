@@ -92,6 +92,19 @@ const Tetris = () => {
         drop();
     };
 
+    // Feature: Hard Drop
+    const hardDrop = () => {
+        let tempY = 0;
+        // Keep checking collision while moving down until we hit something
+        while (!checkCollision(player, stage, { x: 0, y: tempY + 1 })) {
+            tempY += 1;
+        }
+
+        // Update position to the lowest point
+        updatePlayerPos({ x: 0, y: tempY, collided: true });
+        setDropTime(null);
+    };
+
     const move = ({ keyCode }) => {
         if (!gameOver) {
             if (keyCode === 37) { // Left
@@ -102,11 +115,17 @@ const Tetris = () => {
                 dropPlayer();
             } else if (keyCode === 38) { // Up
                 playerRotate(stage, 1);
-            } else if (keyCode === 32) { // Space - Hard Drop (optional, skipping for now)
-                // dropPlayer(); 
+            } else if (keyCode === 32) { // Space - Hard Drop
+                // Prevent default scrolling behavior for space
+                if (window.event) window.event.preventDefault();
+                hardDrop();
             }
         }
     };
+
+    useInterval(() => {
+        drop();
+    }, dropTime);
 
     return (
         <div
@@ -160,6 +179,7 @@ const Tetris = () => {
                                 <li>↑ Rotate</li>
                                 <li>← → Move</li>
                                 <li>↓ Accelerate</li>
+                                <li>Space Drop</li>
                             </ul>
                         </div>
                     </div>
