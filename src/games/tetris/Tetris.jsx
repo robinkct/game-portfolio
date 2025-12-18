@@ -137,6 +137,7 @@ const Tetris = () => {
     // Touch Handling
     let touchStartX = 0;
     let touchStartY = 0;
+    let lastTapTime = 0; // For double tap detection
 
     const handleTouchStart = (e) => {
         touchStartX = e.touches[0].clientX;
@@ -148,6 +149,23 @@ const Tetris = () => {
 
         const touchEndX = e.changedTouches[0].clientX;
         const touchEndY = e.changedTouches[0].clientY;
+
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTapTime;
+
+        // Check for double tap (Hard Drop)
+        // If the movement is very small (it's a tap, not a swipe) AND time difference is small
+        if (Math.abs(touchEndX - touchStartX) < 10 && Math.abs(touchEndY - touchStartY) < 10) {
+            if (tapLength < 300 && tapLength > 0) {
+                // Double tap detected
+                if (window.event) window.event.preventDefault();
+                hardDrop();
+                lastTapTime = 0; // Reset
+                return;
+            } else {
+                lastTapTime = currentTime;
+            }
+        }
 
         const deltaX = touchEndX - touchStartX;
         const deltaY = touchEndY - touchStartY;
@@ -164,6 +182,7 @@ const Tetris = () => {
                 if (deltaY > 0) move({ keyCode: 40 }); // Down
                 else move({ keyCode: 38 }); // Up (Rotate)
             }
+            // Tap (Single tap could rotate too, but let's stick to swipe up for rotate to avoid conflict with double tap)
         }
     };
 
@@ -181,7 +200,7 @@ const Tetris = () => {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-gaming-dark to-gaming-dark -z-10" />
 
             {/* Mobile Header: Back + Stats */}
-            <div className="lg:hidden w-full max-w-[350px] flex justify-between items-center mb-2 z-10 shrink-0">
+            <div className="lg:hidden w-full max-w-[350px] flex justify-between items-center mb-1 z-10 shrink-0 h-[5vh]">
                 <Link to="/" className="text-gray-400 text-sm">← Back</Link>
                 <div className="flex gap-4 text-xs font-mono text-white">
                     <div className="bg-gaming-800 px-3 py-1 rounded border border-gaming-500/30">SCORE: {score}</div>
@@ -198,10 +217,10 @@ const Tetris = () => {
                     </div>
                 </div>
 
-                {/* Game Area */}
-                <div className="flex flex-col lg:flex-row gap-4 items-center justify-center h-full w-full min-h-0">
+                {/* Game Area - Mobile: 80% height, Desktop: auto */}
+                <div className="flex flex-col lg:flex-row gap-4 items-center justify-center h-[85vh] lg:h-full w-full min-h-0">
                     {/* Stage - Flexible container */}
-                    <div className="h-auto w-auto aspect-[12/20] max-h-full lg:h-[70vh] shadow-2xl relative shrink-1 min-h-0">
+                    <div className="h-full w-auto aspect-[12/20] max-h-full lg:h-[70vh] shadow-2xl relative shrink-0">
                         <Stage stage={stage} />
 
                         {/* Mobile Game Over Overlay */}
@@ -255,7 +274,7 @@ const Tetris = () => {
             </div>
 
             {/* Mobile Bottom Bar: Start Button */}
-            <div className="lg:hidden w-full max-w-[350px] mt-4 z-10 shrink-0 pb-4">
+            <div className="lg:hidden w-full max-w-[350px] mt-2 z-10 shrink-0 pb-2 h-[8vh] flex items-center">
                 <button
                     onClick={startGame}
                     className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 rounded-lg shadow-lg active:scale-95 transition-transform border border-white/10"
