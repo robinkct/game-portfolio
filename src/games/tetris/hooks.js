@@ -167,7 +167,8 @@ export const useStage = (player, resetPlayer) => {
                             targetY >= 0 &&
                             targetY < STAGE_HEIGHT &&
                             targetX >= 0 &&
-                            targetX < STAGE_WIDTH
+                            targetX < STAGE_WIDTH &&
+                            (newStage[targetY][targetX][1] !== 'merged') // Don't overwrite merged cells
                         ) {
                             newStage[targetY][targetX] = [
                                 value,
