@@ -44,7 +44,7 @@ export const use2048 = () => {
             }
 
             // Optional: Check win (2048 tile)
-            // if (newBoard.flat().includes(2048)) setHasWon(true);
+            // if (newBoard.flat().some(tile => tile && tile.value === 2048)) setHasWon(true);
         }
     }, [board, gameOver]);
 

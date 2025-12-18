@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { use2048 } from './use2048';
 
@@ -35,6 +35,16 @@ const Game2048 = () => {
         return colors[value] || 'bg-gaming-900 text-white';
     };
 
+    // Flatten board to list of tiles with coordinates
+    const tiles = [];
+    board.forEach((row, r) => {
+        row.forEach((tile, c) => {
+            if (tile) {
+                tiles.push({ ...tile, r, c });
+            }
+        });
+    });
+
     return (
         <div className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative overflow-hidden">
             {/* Background Decor */}
@@ -52,25 +62,63 @@ const Game2048 = () => {
                 </div>
 
                 <div className="bg-gaming-900/50 p-4 rounded-xl border border-gaming-900 backdrop-blur-sm relative">
-                    <div className="grid grid-cols-4 gap-3 bg-gaming-800/30 p-3 rounded-lg">
-                        {board.map((row, rIndex) => (
-                            row.map((cell, cIndex) => (
-                                <motion.div
-                                    key={`${rIndex}-${cIndex}`}
-                                    layout
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                                    className={`w-full aspect-square rounded-md flex items-center justify-center text-3xl font-bold ${getTileColor(cell)}`}
-                                >
-                                    {cell !== 0 && cell}
-                                </motion.div>
-                            ))
+                    {/* Grid Background */}
+                    <div className="grid grid-cols-4 gap-3 bg-gaming-800/30 p-3 rounded-lg relative h-[350px] sm:h-[400px]">
+                        {/* Empty Cells for visual grid */}
+                        {Array(16).fill(null).map((_, i) => (
+                            <div key={i} className="bg-gaming-card rounded-md w-full h-full opacity-50" />
                         ))}
+
+                        {/* Interactive Tiles Layer */}
+                        <div className="absolute inset-0 p-3 pointer-events-none">
+                            <AnimatePresence>
+                                {tiles.map((tile) => (
+                                    <motion.div
+                                        key={tile.id}
+                                        initial={tile.isNew ? { scale: 0 } : { scale: 1 }}
+                                        animate={{
+                                            scale: 1,
+                                            // Calculate position based on percentage (100% / 4 rows/cols)
+                                            // Gap calculation is tricky in absolute percentage.
+                                            // Easier to use CSS Grid for layout, but wait...
+                                            // If I use absolute position, I need to know exact pixel or % values including gaps.
+                                            // Alternative: Use layout prop within the same grid?
+                                            // If I use layout prop, I need to flatten the list and rely on FLIP.
+                                            // BUT, with grid, empty cells mess up the order.
+                                            // Absolute positioning is safer for 2048.
+
+                                            // Let's assume uniform grid with gap.
+                                            // Top = (Row Index * 25)%
+                                            // Left = (Col Index * 25)%
+                                            // But we have gaps.
+                                            // Let's use calc.
+                                            left: `calc(${tile.c * 25}% + ${tile.c * 0.75}rem)`, // 0.75rem is approximate gap-3
+                                            top: `calc(${tile.r * 25}% + ${tile.r * 0.75}rem)`,
+                                        }}
+                                        exit={{ scale: 0, opacity: 0 }}
+                                        transition={{
+                                            // The user explicitly requested 0.1s delay/duration for movement
+                                            type: "tween",
+                                            ease: "easeInOut", // easeInOut for smooth sliding
+                                            duration: 0.1
+                                        }}
+                                        className={`absolute w-[calc(25%-0.56rem)] h-[calc(25%-0.56rem)] rounded-md flex items-center justify-center text-3xl font-bold ${getTileColor(tile.value)} z-10`}
+                                        style={{
+                                            // Fine tuning the size calculation to account for gaps
+                                            // gap-3 = 0.75rem. Total gap space = 3 * 0.75rem = 2.25rem
+                                            // Cell width = (100% - 2.25rem) / 4. 
+                                            // For simplicity, let the calc in tailwind handle it or use style
+                                        }}
+                                    >
+                                        {tile.value}
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                        </div>
                     </div>
 
                     {(gameOver || hasWon) && (
-                        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center rounded-xl z-10 backdrop-blur-sm">
+                        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center rounded-xl z-20 backdrop-blur-sm">
                             <h2 className={`text-5xl font-bold mb-4 ${hasWon ? 'text-yellow-400' : 'text-red-500'}`}>
                                 {hasWon ? 'YOU WON!' : 'GAME OVER'}
                             </h2>
