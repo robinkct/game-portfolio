@@ -87,22 +87,17 @@ const Game2048 = () => {
                                             // BUT, with grid, empty cells mess up the order.
                                             // Absolute positioning is safer for 2048.
 
-                                            // Let's assume uniform grid with gap.
-                                            // Top = (Row Index * 25)%
-                                            // Left = (Col Index * 25)%
-                                            // But we have gaps.
-                                            // Let's use calc.
-                                            left: `calc(${tile.c * 25}% + ${tile.c * 0.75}rem)`, // 0.75rem is approximate gap-3
-                                            top: `calc(${tile.r * 25}% + ${tile.r * 0.75}rem)`,
+                                            // Updated formula to fit gap-3 (0.75rem)
+                                            left: `calc(${tile.c * 25}% + ${tile.c * 0.1875}rem)`,
+                                            top: `calc(${tile.r * 25}% + ${tile.r * 0.1875}rem)`,
                                         }}
                                         exit={{ scale: 0, opacity: 0 }}
                                         transition={{
-                                            // The user explicitly requested 0.1s delay/duration for movement
                                             type: "tween",
-                                            ease: "easeInOut", // easeInOut for smooth sliding
+                                            ease: "easeInOut",
                                             duration: 0.1
                                         }}
-                                        className={`absolute w-[calc(25%-0.56rem)] h-[calc(25%-0.56rem)] rounded-md flex items-center justify-center text-3xl font-bold ${getTileColor(tile.value)} z-10`}
+                                        className={`absolute w-[calc(25%-0.5625rem)] h-[calc(25%-0.5625rem)] rounded-md flex items-center justify-center text-3xl font-bold ${getTileColor(tile.value)} z-10`}
                                         style={{
                                             // Fine tuning the size calculation to account for gaps
                                             // gap-3 = 0.75rem. Total gap space = 3 * 0.75rem = 2.25rem

@@ -121,46 +121,27 @@ export const moveRight = (board) => {
     return { board: newBoard, score: totalScore, hasChanged };
 };
 
-const rotateLeft = (board) => {
-    const rows = board.length;
-    const cols = board[0].length;
-    let newBoard = Array(cols).fill().map(() => Array(rows).fill(null));
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            newBoard[c][rows - 1 - r] = board[r][c];
-        }
-    }
-    return newBoard;
-};
-
-const rotateRight = (board) => {
-    const rows = board.length;
-    const cols = board[0].length;
-    let newBoard = Array(cols).fill().map(() => Array(rows).fill(null));
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            newBoard[c][r] = board[rows - 1 - c][c];
-        }
-    }
-    return newBoard;
+// Transpose: Rows become Columns
+const transpose = (board) => {
+    return board[0].map((_, c) => board.map(r => r[c]));
 };
 
 export const moveUp = (board) => {
-    // Rotate counter-clockwise (Left)
-    // [0,0] -> [3,0] ? No.
-    // simpler helpers
-    // rotateLeft: cols become rows, reading from right to left?
-    // Let's use the explicit helpers I wrote above to be sure.
-    let rotated = rotateLeft(board);
-    const { board: movedBoard, score, hasChanged } = moveLeft(rotated);
-    let newBoard = rotateRight(movedBoard);
+    // Transpose so columns become rows
+    // [Top, Bottom] becomes [Left, Right]
+    // moveLeft will move items towards index 0 (Top)
+    let transposed = transpose(board);
+    const { board: movedBoard, score, hasChanged } = moveLeft(transposed);
+    let newBoard = transpose(movedBoard);
     return { board: newBoard, score, hasChanged };
 };
 
 export const moveDown = (board) => {
-    let rotated = rotateRight(board);
-    const { board: movedBoard, score, hasChanged } = moveLeft(rotated);
-    let newBoard = rotateLeft(movedBoard);
+    // Transpose so columns become rows
+    // moveRight will move items towards index 3 (Bottom)
+    let transposed = transpose(board);
+    const { board: movedBoard, score, hasChanged } = moveRight(transposed);
+    let newBoard = transpose(movedBoard);
     return { board: newBoard, score, hasChanged };
 };
 
