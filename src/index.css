@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@layer theme {
+  :root {
+    --color-gaming-50: #f0f9ff;
+    --color-gaming-100: #e0f2fe;
+    --color-gaming-500: #0ea5e9;
+    --color-gaming-900: #0c4a6e;
+    --color-gaming-dark: #0f172a;
+    --color-gaming-card: #1e293b;
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-gaming-dark);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
