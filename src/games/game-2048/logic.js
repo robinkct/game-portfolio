@@ -48,26 +48,22 @@ const slideRow = (row) => {
     let score = 0;
 
     for (let i = 0; i < arr.length - 1; i++) {
-        if (arr[i].value === arr[i + 1].value) {
+        // Safe check for existence
+        if (arr[i] && arr[i + 1] && arr[i].value === arr[i + 1].value) {
             // Merge
-            // We create a new tile representing the merged result
-            // Usually we might want to keep one ID to look like it morphs, 
-            // but creating a new ID forces a re-render of that specific tile which can be used for a "Pop" effect.
-            // However, to animate moving *into* the merge, we might want to preserve one?
-            // Simpler: New ID for the merged result. 
-            // Better UX: The two old tiles should move to the same spot, then vanish.
-            // But that requires tracking "previous positions".
-            // Let's stick to standard ID swap for now.
-
             const newValue = arr[i].value * 2;
             score += newValue;
 
             arr[i] = { id: generateId(), value: newValue, isMerged: true };
             arr[i + 1] = null; // Mark for removal
 
-            // Note: In this simple implementation, the second tile just disappears effectively.
-            // A more advanced implementations tracks "mergedFrom" array of IDs.
-            // But for "movement animation" requested by user configuration, just ensuring distinct IDs is step 1.
+            // Skip next tile since it's merged
+            // However, we just nullified it. The loop will increment i.
+            // Next iteration: i becomes old (i+1). arr[i] is null.
+            // If we blindly check arr[i].value, we crash.
+            // BUT: We added `if (arr[i] && ...)` check at the top.
+            // So if arr[i] is null, the check fails, loop continues.
+            // This is safe. The issue before was likely lack of `arr[i] &&` check.
         }
     }
 
