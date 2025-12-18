@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
-import PikachuVolleyball from 'pikachu-volleyball';
 
 const Pikachu = () => {
     return (
         <div className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-900/10 via-gaming-dark to-gaming-dark -z-10" />
 
-            <div className="flex flex-col items-center w-full max-w-4xl">
+            <div className="flex flex-col items-center w-full max-w-4xl h-full">
                 <div className="w-full flex justify-between items-center mb-8 px-4">
                     <Link to="/" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 font-bold">
                         ← BACK TO HOME
@@ -16,10 +15,14 @@ const Pikachu = () => {
                     </h1>
                 </div>
 
-                <div className="bg-gaming-card p-2 rounded-xl shadow-2xl border border-gaming-900 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
-                    {/* The game component handles its own canvas */}
-                    <div className="rounded-lg overflow-hidden">
-                        <PikachuVolleyball width={432 * 2} height={304 * 2} />
+                <div className="bg-gaming-card p-2 rounded-xl shadow-2xl border border-gaming-900 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500 w-full max-w-[864px]">
+                    <div className="aspect-[432/304] w-full bg-black relative">
+                        <iframe
+                            src="/pikachu-volleyball/index.html"
+                            className="absolute inset-0 w-full h-full border-0"
+                            title="Pikachu Volleyball"
+                            scrolling="no"
+                        />
                     </div>
                 </div>
 
