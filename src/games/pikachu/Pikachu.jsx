@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { getAssetUrl } from '../../utils/assets';
 
 const Pikachu = () => {
     return (
@@ -18,7 +19,7 @@ const Pikachu = () => {
                 <div className="bg-gaming-card p-2 rounded-xl shadow-2xl border border-gaming-900 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500 w-full max-w-[864px]">
                     <div className="aspect-[432/304] w-full bg-black relative">
                         <iframe
-                            src="/pikachu-volleyball/index.html"
+                            src={getAssetUrl('/pikachu-volleyball/index.html')}
                             className="absolute inset-0 w-full h-full border-0"
                             title="Pikachu Volleyball"
                             scrolling="no"
