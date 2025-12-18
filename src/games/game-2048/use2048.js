@@ -39,18 +39,30 @@ export const use2048 = () => {
     }, [initGame]);
 
     const executeMove = useCallback((direction) => {
-        if (gameOver) return;
+        if (gameOver) {
+            console.log('Game Over, ignoring move');
+            return;
+        }
 
         const currentBoard = boardRef.current;
+        console.log(`Attempting move: ${direction}`);
+
         let result;
 
-        switch (direction) {
-            case 'ArrowLeft': result = Logic.moveLeft(currentBoard); break;
-            case 'ArrowRight': result = Logic.moveRight(currentBoard); break;
-            case 'ArrowUp': result = Logic.moveUp(currentBoard); break;
-            case 'ArrowDown': result = Logic.moveDown(currentBoard); break;
-            default: return;
+        try {
+            switch (direction) {
+                case 'ArrowLeft': result = Logic.moveLeft(currentBoard); break;
+                case 'ArrowRight': result = Logic.moveRight(currentBoard); break;
+                case 'ArrowUp': result = Logic.moveUp(currentBoard); break;
+                case 'ArrowDown': result = Logic.moveDown(currentBoard); break;
+                default: return;
+            }
+        } catch (e) {
+            console.error("Move calculation failed", e);
+            return;
         }
+
+        console.log(`Move result: changed=${result.hasChanged}, score=${result.score}`);
 
         if (result.hasChanged) {
             isMovingRef.current = true;
@@ -61,6 +73,7 @@ export const use2048 = () => {
             setScore(prev => prev + result.score);
 
             if (Logic.checkGameOver(newBoard)) {
+                console.log("Game Over detected!");
                 setGameOver(true);
             }
 
@@ -71,19 +84,14 @@ export const use2048 = () => {
                 // If there was a pending move, execute it immediately
                 if (pendingMoveRef.current) {
                     const nextMove = pendingMoveRef.current;
+                    console.log(`Executing buffered move: ${nextMove}`);
                     pendingMoveRef.current = null;
                     // Recursive call safe because it's in setTimeout (new stack)
                     executeMove(nextMove);
                 }
             }, 100);
-
-            // Optional: Check win (2048 tile)
-            // if (newBoard.flat().some(tile => tile && tile.value === 2048)) setHasWon(true);
         } else {
-            // If move didn't change anything, we don't lock input. 
-            // But if we had a pending move (unlikely if we just arrived here directly), we should clear it?
-            // Actually if I press Left (No change), then Right (Change).
-            // Left shouldn't lock. Right should lock.
+            console.log("Move resulted in no change.");
         }
     }, [gameOver]);
 
