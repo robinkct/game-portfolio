@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { createStage, checkCollision } from './hooks';
 import { useInterval, usePlayer, useStage, useGameStatus } from './hooks';
 import { TETROMINOS } from './tetronimos';
+import GameTutorial from '../../components/GameTutorial';
 
 // Styled Components
 const Stage = ({ stage }) => (
@@ -216,6 +217,11 @@ const Tetris = () => {
                     <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-purple-800 opacity-50">
                         TETRIS
                     </div>
+                </div>
+
+                {/* Tutorial - Mobile Only */}
+                <div className="lg:hidden w-full mb-4">
+                    <GameTutorial game="tetris" />
                 </div>
 
                 {/* Game Area Wrapper - Takes remaining space on mobile */}

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { use2048 } from './use2048';
+import GameTutorial from '../../components/GameTutorial';
 
 const Game2048 = () => {
     const { board, score, move, initGame, gameOver, hasWon } = use2048();
@@ -88,14 +89,19 @@ const Game2048 = () => {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-900/20 via-gaming-dark to-gaming-dark -z-10" />
 
             <div className="max-w-md w-full">
-                <div className="flex justify-between items-center mb-6">
-                    <Link to="/" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
-                        ← Back
+                <div className="w-full flex justify-between items-center mb-8 px-4">
+                    <Link to="/" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 font-bold">
+                        ← BACK TO HOME
                     </Link>
-                    <div className="text-right">
-                        <p className="text-gray-400 text-sm uppercase tracking-wider">Score</p>
-                        <p className="text-4xl font-bold text-white">{score}</p>
-                    </div>
+                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">
+                        2048
+                    </h1>
+                </div>
+
+                <GameTutorial game="2048" />
+                <div className="text-right mb-6 px-4">
+                    <p className="text-gray-400 text-sm uppercase tracking-wider">Score</p>
+                    <p className="text-4xl font-bold text-white">{score}</p>
                 </div>
 
                 <div className="bg-gaming-900/50 p-4 rounded-xl border border-gaming-900 backdrop-blur-sm relative">
