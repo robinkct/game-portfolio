@@ -88,18 +88,18 @@ const Game2048 = () => {
             {/* Background Decor */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-900/20 via-gaming-dark to-gaming-dark -z-10" />
 
-            <div className="max-w-md w-full">
-                <div className="w-full flex justify-between items-center mb-8 px-4">
-                    <Link to="/" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 font-bold">
-                        ← BACK TO HOME
+            <div className="max-w-md w-full px-2">
+                <div className="w-full flex justify-between items-center mb-4 lg:mb-8">
+                    <Link to="/" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 font-bold text-sm lg:text-base z-10">
+                        ← BACK
                     </Link>
-                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">
+                    <h1 className="text-2xl lg:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">
                         2048
                     </h1>
                 </div>
 
                 <GameTutorial game="2048" />
-                <div className="text-right mb-6 px-4">
+                <div className="text-right mb-6">
                     <p className="text-gray-400 text-sm uppercase tracking-wider">Score</p>
                     <p className="text-4xl font-bold text-white">{score}</p>
                 </div>

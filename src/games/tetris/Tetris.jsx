@@ -209,6 +209,11 @@ const Tetris = () => {
                 </div>
             </div>
 
+            {/* Tutorial - Mobile Only - OUTSIDE main flex container */}
+            <div className="lg:hidden w-full max-w-[350px] mb-2 shrink-0">
+                <GameTutorial game="tetris" />
+            </div>
+
             {/* Main Content Area - Responsive Flex */}
             <div className="flex w-full max-w-5xl justify-center lg:justify-between items-start gap-8 flex-1 min-h-0 lg:h-auto overflow-hidden">
                 {/* Desktop Sidebar Left */}
@@ -217,11 +222,6 @@ const Tetris = () => {
                     <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-purple-800 opacity-50">
                         TETRIS
                     </div>
-                </div>
-
-                {/* Tutorial - Mobile Only */}
-                <div className="lg:hidden w-full mb-4">
-                    <GameTutorial game="tetris" />
                 </div>
 
                 {/* Game Area Wrapper - Takes remaining space on mobile */}

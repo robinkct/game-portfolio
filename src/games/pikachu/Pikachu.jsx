@@ -27,21 +27,22 @@ const Pikachu = () => {
 
             // Send key to iframe
             const keyMap = {
+                // Player 1
                 'ArrowUp': { keyCode: 38, key: 'ArrowUp' },
                 'ArrowDown': { keyCode: 40, key: 'ArrowDown' },
                 'ArrowLeft': { keyCode: 37, key: 'ArrowLeft' },
                 'ArrowRight': { keyCode: 39, key: 'ArrowRight' },
                 'Enter': { keyCode: 13, key: 'Enter' },
-                'd': { keyCode: 68, key: 'd' },
-                'D': { keyCode: 68, key: 'd' },
-                'f': { keyCode: 70, key: 'f' },
-                'F': { keyCode: 70, key: 'f' },
-                'g': { keyCode: 71, key: 'g' },
-                'G': { keyCode: 71, key: 'g' },
-                'r': { keyCode: 82, key: 'r' },
-                'R': { keyCode: 82, key: 'r' },
-                'z': { keyCode: 90, key: 'z' },
-                'Z': { keyCode: 90, key: 'z' }
+                // Player 2 - ASDW + Space
+                'w': { keyCode: 82, key: 'r' },  // Up (R in original game)
+                'W': { keyCode: 82, key: 'r' },
+                's': { keyCode: 70, key: 'f' },  // Down (F in original game)
+                'S': { keyCode: 70, key: 'f' },
+                'a': { keyCode: 68, key: 'd' },  // Left (D in original game)
+                'A': { keyCode: 68, key: 'd' },
+                'd': { keyCode: 71, key: 'g' },  // Right (G in original game)
+                'D': { keyCode: 71, key: 'g' },
+                ' ': { keyCode: 90, key: 'z' }   // Smash (Z in original game)
             };
 
             if (keyMap[e.key]) {
@@ -51,21 +52,22 @@ const Pikachu = () => {
 
         const handleKeyUp = (e) => {
             const keyMap = {
+                // Player 1
                 'ArrowUp': { keyCode: 38, key: 'ArrowUp' },
                 'ArrowDown': { keyCode: 40, key: 'ArrowDown' },
                 'ArrowLeft': { keyCode: 37, key: 'ArrowLeft' },
                 'ArrowRight': { keyCode: 39, key: 'ArrowRight' },
                 'Enter': { keyCode: 13, key: 'Enter' },
-                'd': { keyCode: 68, key: 'd' },
-                'D': { keyCode: 68, key: 'd' },
-                'f': { keyCode: 70, key: 'f' },
-                'F': { keyCode: 70, key: 'f' },
-                'g': { keyCode: 71, key: 'g' },
-                'G': { keyCode: 71, key: 'g' },
-                'r': { keyCode: 82, key: 'r' },
-                'R': { keyCode: 82, key: 'r' },
-                'z': { keyCode: 90, key: 'z' },
-                'Z': { keyCode: 90, key: 'z' }
+                // Player 2 - ASDW + Space
+                'w': { keyCode: 82, key: 'r' },
+                'W': { keyCode: 82, key: 'r' },
+                's': { keyCode: 70, key: 'f' },
+                'S': { keyCode: 70, key: 'f' },
+                'a': { keyCode: 68, key: 'd' },
+                'A': { keyCode: 68, key: 'd' },
+                'd': { keyCode: 71, key: 'g' },
+                'D': { keyCode: 71, key: 'g' },
+                ' ': { keyCode: 90, key: 'z' }
             };
 
             if (keyMap[e.key]) {
@@ -196,7 +198,7 @@ const Pikachu = () => {
                 <GameTutorial game="pikachu" />
 
                 <div
-                    className="bg-gaming-card p-1 lg:p-2 rounded-xl shadow-2xl border border-gaming-900 overflow-hidden relative w-full max-w-[864px]"
+                    className="bg-gaming-card p-1 lg:p-2 rounded-xl shadow-2xl border border-gaming-900 overflow-hidden relative w-full max-w-[95vw] lg:max-w-[864px]"
                 >
                     {/* Touch Overlay */}
                     <div

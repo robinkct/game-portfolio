@@ -57,8 +57,8 @@ const GameTutorial = ({ game }) => {
                     { key: 'Enter', desc: '扣球/跳躍' },
                     { key: '', desc: '' },
                     { key: 'Player 2', desc: '' },
-                    { key: 'D F G R', desc: '移動' },
-                    { key: 'Z', desc: '扣球/跳躍' }
+                    { key: 'A S D W', desc: '移動' },
+                    { key: 'Space', desc: '扣球/跳躍' }
                 ],
                 mobile: [
                     { key: '滑動', desc: '移動皮卡丘' },
