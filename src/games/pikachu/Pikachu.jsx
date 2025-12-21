@@ -8,6 +8,7 @@ const Pikachu = () => {
     const iframeRef = React.useRef(null);
     const touchStartRef = React.useRef({ x: 0, y: 0, time: 0 });
     const activeKeysRef = React.useRef(new Set());
+    const containerRef = React.useRef(null);
 
     // Helper to send keys to iframe
     const sendKey = (type, keyCode, key) => {
@@ -15,6 +16,78 @@ const Pikachu = () => {
             iframeRef.current.contentWindow.postMessage({ type, keyCode, key }, '*');
         }
     };
+
+    // Keyboard event handler
+    React.useEffect(() => {
+        const handleKeyDown = (e) => {
+            // Prevent default for arrow keys and Enter to avoid page scrolling
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(e.key)) {
+                e.preventDefault();
+            }
+
+            // Send key to iframe
+            const keyMap = {
+                'ArrowUp': { keyCode: 38, key: 'ArrowUp' },
+                'ArrowDown': { keyCode: 40, key: 'ArrowDown' },
+                'ArrowLeft': { keyCode: 37, key: 'ArrowLeft' },
+                'ArrowRight': { keyCode: 39, key: 'ArrowRight' },
+                'Enter': { keyCode: 13, key: 'Enter' },
+                'd': { keyCode: 68, key: 'd' },
+                'D': { keyCode: 68, key: 'd' },
+                'f': { keyCode: 70, key: 'f' },
+                'F': { keyCode: 70, key: 'f' },
+                'g': { keyCode: 71, key: 'g' },
+                'G': { keyCode: 71, key: 'g' },
+                'r': { keyCode: 82, key: 'r' },
+                'R': { keyCode: 82, key: 'r' },
+                'z': { keyCode: 90, key: 'z' },
+                'Z': { keyCode: 90, key: 'z' }
+            };
+
+            if (keyMap[e.key]) {
+                sendKey('keydown', keyMap[e.key].keyCode, keyMap[e.key].key);
+            }
+        };
+
+        const handleKeyUp = (e) => {
+            const keyMap = {
+                'ArrowUp': { keyCode: 38, key: 'ArrowUp' },
+                'ArrowDown': { keyCode: 40, key: 'ArrowDown' },
+                'ArrowLeft': { keyCode: 37, key: 'ArrowLeft' },
+                'ArrowRight': { keyCode: 39, key: 'ArrowRight' },
+                'Enter': { keyCode: 13, key: 'Enter' },
+                'd': { keyCode: 68, key: 'd' },
+                'D': { keyCode: 68, key: 'd' },
+                'f': { keyCode: 70, key: 'f' },
+                'F': { keyCode: 70, key: 'f' },
+                'g': { keyCode: 71, key: 'g' },
+                'G': { keyCode: 71, key: 'g' },
+                'r': { keyCode: 82, key: 'r' },
+                'R': { keyCode: 82, key: 'r' },
+                'z': { keyCode: 90, key: 'z' },
+                'Z': { keyCode: 90, key: 'z' }
+            };
+
+            if (keyMap[e.key]) {
+                sendKey('keyup', keyMap[e.key].keyCode, keyMap[e.key].key);
+            }
+        };
+
+        // Add event listeners
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+
+        // Focus container on mount
+        if (containerRef.current) {
+            containerRef.current.focus();
+        }
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
 
     const handleTouchStart = (e) => {
         touchStartRef.current = {
@@ -96,7 +169,11 @@ const Pikachu = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        <div
+            ref={containerRef}
+            tabIndex={0}
+            className="min-h-screen bg-gaming-dark flex flex-col items-center justify-center p-4 relative overflow-hidden outline-none"
+        >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-900/10 via-gaming-dark to-gaming-dark -z-10" />
 
             {/* Hint for mobile users */}
